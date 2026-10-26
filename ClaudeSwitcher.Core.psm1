@@ -81,6 +81,14 @@ function New-SwitcherContext {
         $candidates = @()
         $standard = Join-Path $env:APPDATA 'Claude'
         if (Test-Path -LiteralPath (Join-Path $standard 'config.json')) { $candidates += $standard }
+        $local = Join-Path $env:LOCALAPPDATA 'Claude'
+        if (Test-Path -LiteralPath (Join-Path $local 'config.json')) { $candidates += $local }
+        $localData = Join-Path $env:LOCALAPPDATA 'Claude-Data'
+        if (Test-Path -LiteralPath $localData) {
+            foreach ($profile in @(Get-ChildItem -LiteralPath $localData -Directory -Filter 'claude_*')) {
+                if (Test-Path -LiteralPath (Join-Path $profile.FullName 'config.json')) { $candidates += $profile.FullName }
+            }
+        }
         $packages = Join-Path $env:LOCALAPPDATA 'Packages'
         if (Test-Path -LiteralPath $packages) {
             foreach ($package in @(Get-ChildItem -LiteralPath $packages -Directory -Filter 'Claude_*')) {

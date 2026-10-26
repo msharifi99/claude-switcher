@@ -78,7 +78,7 @@ The outgoing login is captured again before switching to retain refreshed authen
 .\ClaudeSwitcher.ps1 Switch Work -WhatIf # Shows the intended action without changing files.
 ```
 
-Standard `%APPDATA%\Claude` and Microsoft Store profiles under `%LOCALAPPDATA%\Packages\Claude_*\LocalCache\Roaming\Claude` are detected. If more than one profile exists, select it explicitly:
+Profiles are detected under `%APPDATA%\Claude`, `%LOCALAPPDATA%\Claude`, `%LOCALAPPDATA%\Claude-Data\claude_*`, and the Microsoft Store location `%LOCALAPPDATA%\Packages\Claude_*\LocalCache\Roaming\Claude`. Each candidate must contain `config.json`. If more than one profile exists, select it explicitly:
 
 ```powershell
 .\ClaudeSwitcher.ps1 Doctor -DesktopDataDirectory 'C:\path\to\Claude'
@@ -93,6 +93,7 @@ Run the isolated regression suite:
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\Core.Tests.ps1
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\Storage.Tests.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\Discovery.Tests.ps1
 ```
 
 References: [official Desktop Code documentation](https://code.claude.com/docs/en/desktop) and [account-partitioned Desktop session storage reported in Anthropic's issue tracker](https://github.com/anthropics/claude-code/issues/85294). The installed Desktop source and local file schemas supplied the Windows cookie/cache implementation details. `tools/Inspect-Desktop.cjs` is an optional read-only archive inspection helper used in development, not a runtime dependency.
